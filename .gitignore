@@ -1,0 +1,15 @@
+node_modules
+bin
+.env
+coverage
+coverage.json
+typechain
+
+#Hardhat files
+cache
+artifacts
+
+package-lock.json
+yarn.lock
+
+.husky
