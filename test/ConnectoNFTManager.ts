@@ -1,4 +1,3 @@
-import { expect, assert } from "chai";
 import { ethers, upgrades } from "hardhat";
 import { PayableOverrides } from "ethers";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
@@ -6,6 +5,7 @@ import { ConnectoNFTManager, ConnectoToken } from "../typechain";
 import { getCreateCollectionSignature, makeId } from "../utils";
 import { getCollectionData } from "../utils/nftMetadata";
 import { COLLECTION_CONFIG } from "../constants";
+import { expect } from "chai";
 
 describe("ConnectoNFTManager", function () {
   let connectoNFTManager: ConnectoNFTManager, connectoToken: ConnectoToken;
@@ -89,6 +89,10 @@ describe("ConnectoNFTManager", function () {
     );
     console.log("createCollection tx: ", tx.hash);
     const createCollectionReceipt = await tx.wait(1);
+    expect(createCollectionReceipt).to.be.emit(
+      connectoNFTManager,
+      "NewCollection"
+    );
     console.log("confirmed");
     console.log(createCollectionReceipt);
   });

@@ -1,3 +1,4 @@
+import { Listing } from "./../type.d";
 import { BigNumberish } from "ethers";
 import { Bytes, arrayify, solidityKeccak256 } from "ethers/lib/utils";
 
@@ -29,6 +30,39 @@ export const getMintSignature = (
   const msg = solidityKeccak256(
     ["string", "string", "address", "address"],
     [fnName, orderHash, collectionAddr, sender]
+  );
+  return signer.signMessage(arrayify(msg));
+};
+
+export const getListingSignature = (
+  signer: MsgSigner,
+  listingData: Listing
+) => {
+  const msg = solidityKeccak256(
+    [
+      "uint256",
+      "address",
+      "address",
+      "uint256",
+      "uint256",
+      "uint256",
+      "address",
+      "uint256",
+      "uint256",
+      "uint8",
+    ],
+    [
+      listingData.listingId,
+      listingData.assetContract,
+      listingData.tokenOwner,
+      listingData.tokenId,
+      listingData.startTime,
+      listingData.endTime,
+      listingData.currency,
+      listingData.reservePricePerToken,
+      listingData.buyoutPricePerToken,
+      listingData.listingType,
+    ]
   );
   return signer.signMessage(arrayify(msg));
 };

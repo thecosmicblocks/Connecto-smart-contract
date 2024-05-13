@@ -102,3 +102,16 @@ export interface CreateCollectionData {
   /// Extra collection flags
   flags: CollectionFlags;
 }
+
+export interface Listing {
+  listingId: BigNumberish;
+  tokenOwner: string;
+  assetContract: string;
+  tokenId: BigNumberish;
+  startTime: BigNumberish;
+  endTime: BigNumberish;
+  currency: string;
+  reservePricePerToken: BigNumberish;
+  buyoutPricePerToken: BigNumberish;
+  listingType: BigNumberish;
+}

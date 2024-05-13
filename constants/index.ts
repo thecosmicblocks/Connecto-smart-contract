@@ -46,3 +46,10 @@ export const COLLECTION_CONFIG = {
   nestingUrl: "https://nesting.unique.network/common",
   imagesInParallel: require("os").cpus().length,
 };
+
+export const NATIVE_TOKEN = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+
+export const ListingType = {
+  Direct: 0,
+  Auction: 1,
+};

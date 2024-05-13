@@ -51,3 +51,7 @@ export const makeId = (length: number): string => {
   }
   return result;
 };
+
+export const timestampToEpochTime = (timestamp: number | string | Date) => {
+  return Math.floor(new Date(timestamp).getTime() / 1000);
+};
