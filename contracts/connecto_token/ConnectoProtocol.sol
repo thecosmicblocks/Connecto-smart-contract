@@ -11,6 +11,7 @@ contract ConnectoProtocol is OwnableUpgradeable {
     mapping(address => mapping(address => uint256)) public claimableAmount;
 
     error InvalidAmount(uint256 amount);
+    error TransferFailed(uint256 amount);
     event Donated(address sender, address idol, address token, uint256 amount);
 
     function initialize(
@@ -45,6 +46,13 @@ contract ConnectoProtocol is OwnableUpgradeable {
             revert InvalidAmount(balance);
         }
         claimableAmount[caller][token] = 0;
-        TransferHelper.safeTransfer(token, caller, balance);
+        if (token == address(0)) {
+            (bool isSucceeded, ) = msg.sender.call{value: balance}("");
+            if (!isSucceeded) {
+                revert TransferFailed(balance);
+            }
+        } else {
+            TransferHelper.safeTransfer(token, caller, balance);
+        }
     }
 }

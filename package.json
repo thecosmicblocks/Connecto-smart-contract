@@ -60,6 +60,7 @@
     "bignumber.js": "^9.0.2",
     "ethereumjs-common": "^1.5.2",
     "ethereumjs-tx": "^2.1.2",
+    "ethers": "v5.7",
     "fs": "^0.0.1-security",
     "hardhat-watcher": "^2.1.1",
     "husky": "^7.0.4",

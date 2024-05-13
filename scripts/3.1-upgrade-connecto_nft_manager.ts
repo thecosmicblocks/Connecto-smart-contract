@@ -6,29 +6,16 @@ import { appendAddress, getAddress, sleep } from "../utils";
 async function main() {
   const { ethers, network, config, upgrades } = hre;
   const contract = await ethers.getContractFactory("ConnectoNFTManager");
-  const signatureVerifier = new ethers.Wallet(
-    process.env.PRIVATE_KEY_SIGNATUER_VERIFIER as string
+  const deployedContract = await upgrades.upgradeProxy(
+    getAddress(network.name, CONTRACT_KEY.CONNECTO_NFT_MANAGER),
+    contract
   );
-  const deployedContract = await upgrades.deployProxy(contract, [
-    process.env.ADDRESS_COLLECTION_HELPER as string,
-    getAddress(network.name, CONTRACT_KEY.CONNECTO_TOKEN),
-    process.env.ADDRESS_TREASURY,
-    signatureVerifier.address,
-    process.env.ADDRESS_OWNER as string,
-  ]);
   await deployedContract.deployed();
-
-  console.log("ConnectoNFTManager deployed to:", deployedContract.address);
   const implAddr = await upgrades.erc1967.getImplementationAddress(
     deployedContract.address
   );
-  console.log("ConnectoNFTManager Implementation deployed to:", implAddr);
+  console.log("ConnectoNFTManager Implementation upgraded to:", implAddr);
 
-  appendAddress(
-    network.name,
-    deployedContract.address,
-    CONTRACT_KEY.CONNECTO_NFT_MANAGER
-  );
   appendAddress(network.name, implAddr, CONTRACT_KEY.CONNECTO_NFT_MANAGER_IMPL);
 
   if (

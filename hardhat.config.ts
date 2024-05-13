@@ -20,6 +20,10 @@ const config: HardhatUserConfig = {
   defaultNetwork: "polygon",
   networks: {
     /// TESTNET
+    unique_testnet: {
+      url: "https://rpc-opal.unique.network",
+      accounts: accounts,
+    },
     polygon_testnet: {
       /// amoy
       chainId: 80002,
@@ -77,10 +81,6 @@ const config: HardhatUserConfig = {
     avalanche_c_testnet: {
       url: "https://api.avax-test.network/ext/bc/C/rpc",
       gas: "auto",
-      accounts: accounts,
-    },
-    unique_testnet: {
-      url: "https://rpc-opal.unique.network",
       accounts: accounts,
     },
 
