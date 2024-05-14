@@ -14,8 +14,6 @@ import {IConnectoMarketplace} from "../interface/IConnectoMarketplace.sol";
 import {TransferHelper} from "../common/TransferHelper.sol";
 import {IERC2981} from "../interface/IERC2981.sol";
 
-import "hardhat/console.sol";
-
 contract ConnectoMarketplace is
     IConnectoMarketplace,
     OwnableUpgradeable,
@@ -272,7 +270,7 @@ contract ConnectoMarketplace is
     /// @dev Lets an account close an auction for either the (1) winning bidder, or (2) auction creator.
     function closeAuction(
         Listing memory targetListing_,
-        address _closeFor
+        address closeFor_
     ) external override nonReentrant {
         if (targetListing_.listingType != ListingType.Auction) {
             revert Forbidden("not an auction.");
@@ -290,35 +288,27 @@ contract ConnectoMarketplace is
                 "cannot close auction before it has ended."
             );
             // No `else if` to let auction close in 1 tx when targetListing_.tokenOwner == targetBid.offeror.
-            if (_closeFor == targetListing_.tokenOwner) {
+            if (closeFor_ == targetListing_.tokenOwner) {
                 _closeAuctionForAuctionCreator(targetListing_, targetBid);
             }
-            if (_closeFor == targetBid.offeror) {
+            if (closeFor_ == targetBid.offeror) {
                 _closeAuctionForBidder(targetListing_, targetBid);
             }
         }
     }
 
     /// @dev Cancels an auction.
-    function _cancelAuction(Listing memory _targetListing) internal {
-        // require(
-        //     listings[_targetListing.listingId].tokenOwner == _msgSender(),
-        //     "caller is not the listing creator."
-        // );
-        // delete listings[_targetListing.listingId];
-        // transferListingTokens(
-        //     address(this),
-        //     _targetListing.tokenOwner,
-        //     _targetListing.quantity,
-        //     _targetListing
-        // );
-        // emit AuctionClosed(
-        //     _targetListing.listingId,
-        //     _msgSender(),
-        //     true,
-        //     _targetListing.tokenOwner,
-        //     address(0)
-        // );
+    function _cancelAuction(Listing memory targetListing_) internal {
+        if (targetListing_.tokenOwner != _msgSender()) {
+            revert Forbidden("caller is not the listing creator.");
+        }
+        emit AuctionClosed(
+            targetListing_.listingId,
+            _msgSender(),
+            true,
+            targetListing_.tokenOwner,
+            address(0)
+        );
     }
 
     /// @dev Closes an auction for an auction creator; distributes winning bid amount to auction creator.
@@ -330,7 +320,7 @@ contract ConnectoMarketplace is
         winningBid_.pricePerToken = 0;
         winningBid[targetListing_.listingId] = winningBid_;
 
-        payout(address(this), payoutAmount, targetListing_);
+        payout(winningBid_.offeror, payoutAmount, targetListing_);
 
         emit AuctionClosed(
             targetListing_.listingId,

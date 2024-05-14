@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { expect } from "chai";
 import { ethers, upgrades } from "hardhat";
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
@@ -91,6 +92,16 @@ describe("ConnectoNFTManager", function () {
     expect(buyTx).to.be.emit(connectoMarketplace, "NewSale");
     const ownerOf = await myErc721.ownerOf(tokenId);
     expect(ethers.utils.getAddress(ownerOf.toString())).to.be.eq(buyer.address);
+
+    /// call claim
+    const sellerClaimTx = await (
+      await connectoMarketplace
+        .connect(seller)
+        .claim(seller.address, listing.currency)
+    ).wait(1);
+    console.log(sellerClaimTx.status);
+    const balanceOfSellerAfter = await seller.getBalance();
+    console.log("balanceOfSellerAfter", balanceOfSellerAfter.toString());
   });
 
   it("Should 'buy' by ConnectoToken", async function () {
@@ -162,7 +173,7 @@ describe("ConnectoNFTManager", function () {
     const sellerClaimTx = await (
       await connectoMarketplace
         .connect(seller)
-        .claim(seller.address, connectoToken.address)
+        .claim(seller.address, listing.currency)
     ).wait(1);
     expect(sellerClaimTx).to.be.emit(connectoToken, "Transfer");
     const balanceOfSellerAfter = await connectoToken.balanceOf(seller.address);

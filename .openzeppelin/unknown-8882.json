@@ -39,6 +39,11 @@
       "address": "0x68C356C18f2B88F26dbEfB5E55491D7CA964EB86",
       "txHash": "0xec4c855ed186b73f0b16e6af907b3fdbd1fa83ca3b86491aad04add02b1525f5",
       "kind": "transparent"
+    },
+    {
+      "address": "0xc7383EB2ebAa37953090BFde1f64e834fa6De0B5",
+      "txHash": "0xf63038320f747857842d2aa8c9ebb3597f84f8fc577e3923406835a436045917",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1625,6 +1630,271 @@
               "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:40"
             }
           ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73"
+            }
+          ]
+        }
+      }
+    },
+    "e4e31f5448209c7651f6f814480b12e82e952d2e34248e4b2c228e5a4df3456d": {
+      "address": "0x59c4e4d530705DFf05C438ae6ee044631A324a9f",
+      "txHash": "0xdc3332744e360758c0bdddffdec113770f299b66c5ea9e00a4647c7345afabc2",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "totalListings",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint256",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:28"
+          },
+          {
+            "label": "contractURI",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:31"
+          },
+          {
+            "label": "platformFeeRecipient",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:34"
+          },
+          {
+            "label": "platformFeeBps",
+            "offset": 20,
+            "slot": "2",
+            "type": "t_uint64",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:40"
+          },
+          {
+            "label": "timeBuffer",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint64",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:47"
+          },
+          {
+            "label": "bidBufferBps",
+            "offset": 8,
+            "slot": "3",
+            "type": "t_uint64",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:50"
+          },
+          {
+            "label": "offers",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint256,t_mapping(t_address,t_struct(Offer)5974_storage))",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:57"
+          },
+          {
+            "label": "winningBid",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_struct(Offer)5974_storage)",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:60"
+          },
+          {
+            "label": "returnBalance",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "contract": "ConnectoMarketplace",
+            "src": "contracts/connecto_dapp/ConnectoMarketplace.sol:63"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_struct(Offer)5974_storage)": {
+            "label": "mapping(address => struct IConnectoMarketplace.Offer)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_mapping(t_address,t_struct(Offer)5974_storage))": {
+            "label": "mapping(uint256 => mapping(address => struct IConnectoMarketplace.Offer))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_struct(Offer)5974_storage)": {
+            "label": "mapping(uint256 => struct IConnectoMarketplace.Offer)",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_struct(Offer)5974_storage": {
+            "label": "struct IConnectoMarketplace.Offer",
+            "members": [
+              {
+                "label": "listingId",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "offeror",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "pricePerToken",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "expirationTimestamp",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.ReentrancyGuard": [
+            {
+              "contract": "ReentrancyGuardUpgradeable",
+              "label": "_status",
+              "type": "t_uint256",
+              "src": "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol:40"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73"
+            }
+          ]
+        }
+      }
+    },
+    "bea59451c85e2f345ef93981c59eadaff6ea28653e6ac64e108dda75a8f41871": {
+      "address": "0x5eB22d3d4BeB7212E820e1E81615fbd2276ae531",
+      "txHash": "0x52c918f4c708fe6a0c5f1ffb6f9197f93dff7a8b8d08f494c442776396a4a853",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "feeCollector",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "ConnectoProtocol",
+            "src": "contracts/connecto_dapp/ConnectoProtocol.sol:9"
+          },
+          {
+            "label": "feePercentage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint256",
+            "contract": "ConnectoProtocol",
+            "src": "contracts/connecto_dapp/ConnectoProtocol.sol:10"
+          },
+          {
+            "label": "claimableAmount",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_mapping(t_address,t_uint256))",
+            "contract": "ConnectoProtocol",
+            "src": "contracts/connecto_dapp/ConnectoProtocol.sol:11"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_mapping(t_address,t_uint256))": {
+            "label": "mapping(address => mapping(address => uint256))",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        },
+        "namespaces": {
           "erc7201:openzeppelin.storage.Ownable": [
             {
               "contract": "OwnableUpgradeable",

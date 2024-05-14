@@ -10,8 +10,6 @@ contract ConnectoProtocol is OwnableUpgradeable {
     uint256 public feePercentage;
     mapping(address => mapping(address => uint256)) public claimableAmount;
 
-    error InvalidAmount(uint256 amount);
-    error TransferFailed(uint256 amount);
     event Donated(address sender, address idol, address token, uint256 amount);
 
     function initialize(
@@ -24,17 +22,30 @@ contract ConnectoProtocol is OwnableUpgradeable {
         feePercentage = feePercentage_;
     }
 
-    function donate(address idol, address token, uint256 amount) external {
+    function donate(
+        address idol,
+        address token,
+        uint256 amount
+    ) external payable {
+        require(amount > 0, "Zero amount");
+        if (token == TransferHelper.NATIVE_TOKEN) {
+            require(msg.value >= amount, "Invalid amount");
+        } else {
+            TransferHelper.safeTransferFrom(
+                token,
+                _msgSender(),
+                address(this),
+                amount
+            );
+        }
+
         // Calculate fee
         uint256 fee = (amount * feePercentage) / 10_000;
         uint256 netAmount = amount - fee;
-        address collector = feeCollector;
 
         // save data
-        claimableAmount[collector][token] =
-            claimableAmount[collector][token] +
-            fee;
-        claimableAmount[idol][token] = claimableAmount[idol][token] + netAmount;
+        claimableAmount[feeCollector][token] += fee;
+        claimableAmount[idol][token] += netAmount;
 
         emit Donated(_msgSender(), idol, token, amount);
     }
@@ -42,15 +53,11 @@ contract ConnectoProtocol is OwnableUpgradeable {
     function claim(address token) external {
         address caller = _msgSender();
         uint256 balance = claimableAmount[caller][token];
-        if (balance == 0) {
-            revert InvalidAmount(balance);
-        }
+        require(balance > 0, "Zero balance");
         claimableAmount[caller][token] = 0;
-        if (token == address(0)) {
+        if (token == TransferHelper.NATIVE_TOKEN) {
             (bool isSucceeded, ) = msg.sender.call{value: balance}("");
-            if (!isSucceeded) {
-                revert TransferFailed(balance);
-            }
+            require(isSucceeded, "TransferFailed");
         } else {
             TransferHelper.safeTransfer(token, caller, balance);
         }

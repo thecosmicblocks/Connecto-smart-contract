@@ -1,6 +1,5 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-import "hardhat/console.sol";
 
 library TransferHelper {
     error ApproveFailed();
@@ -38,12 +37,6 @@ library TransferHelper {
         address to,
         uint256 value
     ) internal {
-        console.log("transferFrom");
-        console.log(from);
-        console.log("transferFrom to");
-        console.log(to);
-
-        console.log(msg.sender);
         // bytes4(keccak256(bytes('transferFrom(address,address,uint256)')));
         (bool success, bytes memory data) = token.call(
             abi.encodeWithSelector(0x23b872dd, from, to, value)
@@ -77,8 +70,6 @@ library TransferHelper {
         (bool success, bytes memory data) = token.call(
             abi.encodeWithSelector(0x70a08231, owner)
         );
-        console.log("==========");
-        console.log(abi.decode(data, (uint256)));
         if (!(success && (abi.decode(data, (uint256)) >= amount))) {
             revert InsufficientBalance();
         }
