@@ -1,1 +1,1 @@
-# Connecto EVM Smart Contract
+# Connecto Solidity Smart Contract

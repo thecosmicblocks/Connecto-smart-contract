@@ -1,19 +1,9 @@
 import { defineConfig } from "@wagmi/cli";
 import { react } from "@wagmi/cli/plugins";
-import { abi as ConnectoNFTManagerAbi } from "./artifacts/contracts/connecto_nft/ConnectoNFTMananger.sol/ConnectoNFTManager.json";
-import { abi as ConnectoProtocolAbi } from "./artifacts/contracts/connecto_token/ConnectoProtocol.sol/ConnectoProtocol.json";
 
+// https://wagmi.sh/cli/getting-started#use-generated-code
 export default defineConfig({
-  out: "sdk/index.ts",
-  contracts: [
-    {
-      name: "ConnectoNFTManager",
-      abi: ConnectoNFTManagerAbi as any,
-    },
-    {
-      name: "ConnectoProtocol",
-      abi: ConnectoProtocolAbi as any,
-    },
-  ],
+  out: "Connecto-solidity-smart_contract-sdk/src/.ts",
+  contracts: [],
   plugins: [react()],
 });
