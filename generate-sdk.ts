@@ -73,3 +73,7 @@ const temp = WAGMI_CONFIG_TEMP.replace("{{sdk_file_name}}", "").replace(
 );
 fs.writeFileSync("wagmi.config.ts", temp, { encoding: "utf-8" });
 console.log("Clean up wagmi.config.ts\n");
+
+spawnSync("cp", ["contract_address.json", "Connecto-smart-contract-sdk/"], {
+  stdio: "inherit",
+});
