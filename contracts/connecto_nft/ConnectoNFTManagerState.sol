@@ -5,7 +5,7 @@ import {IConnecto} from "../interface/IConnecto.sol";
 import {CollectionHelpers} from "@unique-nft/solidity-interfaces/contracts/CollectionHelpers.sol";
 
 abstract contract ConnectoNFTManagerState is IConnecto {
-    mapping(string => bool) executedOrderId;
+    mapping(bytes => bool) executedSig;
     struct ConnectoNFTManagerStateStorage {
         CollectionHelpers helpers;
         address connectoToken;
@@ -29,11 +29,11 @@ abstract contract ConnectoNFTManagerState is IConnecto {
         _states.signatureVerifier = verifier;
     }
 
-    function setExecutedOrderId(string memory orderId) internal {
-        if (executedOrderId[orderId] == true) {
+    function setExecutedSig(bytes memory sig) internal {
+        if (executedSig[sig] == true) {
             revert InvalidValue();
         }
-        executedOrderId[orderId] = true;
+        executedSig[sig] = true;
     }
 
     function states()

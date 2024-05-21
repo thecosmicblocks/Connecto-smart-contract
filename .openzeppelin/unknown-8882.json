@@ -44,6 +44,11 @@
       "address": "0xc7383EB2ebAa37953090BFde1f64e834fa6De0B5",
       "txHash": "0xf63038320f747857842d2aa8c9ebb3597f84f8fc577e3923406835a436045917",
       "kind": "transparent"
+    },
+    {
+      "address": "0x01510CBabD26F8f4CB3326fA0f1579A302D25904",
+      "txHash": "0xd4ba2df99f84bceb3d71244a2da582ec3e56919aa59d73c43d4cc70c90e14491",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -1892,6 +1897,113 @@
           },
           "t_bool": {
             "label": "bool"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73"
+            }
+          ]
+        }
+      }
+    },
+    "164cc2aff0f51c600c053c3a125be19c4c05f064e6bceb26b18a20fb3455e604": {
+      "address": "0x74c3Bf391d77C7888BffFBD943F0beB767A47247",
+      "txHash": "0xbb35a2ad66372ca7981121164dec7acd6682bfa5f122cfe473565e5f51b35308",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "executedSig",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_bytes_memory_ptr,t_bool)",
+            "contract": "ConnectoNFTManagerState",
+            "src": "contracts/connecto_nft/ConnectoNFTManagerState.sol:8"
+          },
+          {
+            "label": "_states",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_struct(ConnectoNFTManagerStateStorage)3746_storage",
+            "contract": "ConnectoNFTManagerState",
+            "src": "contracts/connecto_nft/ConnectoNFTManagerState.sol:16"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes_memory_ptr": {
+            "label": "bytes",
+            "numberOfBytes": "32"
+          },
+          "t_contract(CollectionHelpers)2574": {
+            "label": "contract CollectionHelpers",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_bytes_memory_ptr,t_bool)": {
+            "label": "mapping(bytes => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(ConnectoNFTManagerStateStorage)3746_storage": {
+            "label": "struct ConnectoNFTManagerState.ConnectoNFTManagerStateStorage",
+            "members": [
+              {
+                "label": "helpers",
+                "type": "t_contract(CollectionHelpers)2574",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "connectoToken",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "treasuryWallet",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "signatureVerifier",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_bytes_storage": {
+            "label": "bytes"
+          },
+          "t_uint64": {
+            "label": "uint64"
           }
         },
         "namespaces": {

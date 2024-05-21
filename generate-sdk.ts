@@ -4,6 +4,7 @@ import { abi as ConnectoNFTManagerAbi } from "./artifacts/contracts/connecto_nft
 import { abi as ConnectoProtocolAbi } from "./artifacts/contracts/connecto_dapp/ConnectoProtocol.sol/ConnectoProtocol.json";
 import { abi as ConnectoMarketplaceAbi } from "./artifacts/contracts/connecto_dapp/ConnectoMarketplace.sol/ConnectoMarketplace.json";
 
+const OUT_DIR = "Connecto-smart-contract-sdk";
 const CONTRACTS = [
   {
     name: "ConnectoNFTManager",
@@ -27,7 +28,7 @@ import { react } from "@wagmi/cli/plugins";
 
 // https://wagmi.sh/cli/getting-started#use-generated-code
 export default defineConfig({
-  out: "Connecto-solidity-smart_contract-sdk/src/{{sdk_file_name}}.ts",
+  out: "${OUT_DIR}/src/{{sdk_file_name}}.ts",
   contracts: {{contracts}},
   plugins: [react()],
 });
@@ -51,14 +52,14 @@ console.log("Generated react sdk successfully\n");
 /// ===============================================
 /// ===============================================
 
-let dir = fs.readdirSync("Connecto-solidity-smart_contract-sdk/src", {
+let dir = fs.readdirSync(`${OUT_DIR}/src`, {
   encoding: "utf-8",
 });
 dir = dir.filter((file) => file !== "index.ts");
 const dirContent = dir
-  .map((file) => `export * from "./src/${file}";`)
+  .map((file) => `export * from "./src/${file}"; `)
   .join("\n");
-fs.writeFileSync("Connecto-solidity-smart_contract-sdk/index.ts", dirContent, {
+fs.writeFileSync(`${OUT_DIR}/index.ts`, dirContent, {
   encoding: "utf-8",
 });
 console.log("Exported react sdk successfully\n");

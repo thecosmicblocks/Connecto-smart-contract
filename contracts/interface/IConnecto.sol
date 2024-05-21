@@ -7,6 +7,11 @@ interface IConnecto {
     error InvalidValue();
 
     event NewCollection(address owner, address collectionAddress);
+    event ExchangeToGift(
+        address owner,
+        address collectionAddress,
+        uint256[] tokenIds
+    );
 
     function setTreasury(address treasury) external;
 

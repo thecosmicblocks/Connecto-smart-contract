@@ -35,23 +35,23 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         string memory description,
         string memory symbol,
         string calldata baseURI,
-        string memory orderHash,
+        string memory orderId,
         bytes memory signature
     ) public payable {
-        setExecutedOrderId(orderHash);
         /// cache the state
         ConnectoNFTManagerStateStorage memory _cachedStates = states();
         /// verify the signature
         bool isValidSignature = SignatureChecker.isValidSignatureNow(
             _cachedStates.signatureVerifier,
             keccak256(
-                abi.encodePacked(orderHash, connectoFeeAmount, _msgSender())
+                abi.encodePacked(orderId, connectoFeeAmount, _msgSender())
             ).toEthSignedMessageHash(),
             signature
         );
         if (!isValidSignature) {
             revert InvalidSignature();
         }
+        setExecutedSig(signature);
 
         /// verify the Connecto fee
         TransferHelper.safeEnoughTokenApproved(
@@ -96,17 +96,16 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
     function mintToCollection(
         address collectionAddr,
         address to,
-        string memory orderHash,
+        string memory orderId,
         bytes memory signature
     ) public payable {
-        setExecutedOrderId(orderHash);
         /// verify the signature
         bool isValidSignature = SignatureChecker.isValidSignatureNow(
             states().signatureVerifier,
             keccak256(
                 abi.encodePacked(
                     "mintToCollection",
-                    orderHash,
+                    orderId,
                     collectionAddr,
                     _msgSender()
                 )
@@ -116,6 +115,8 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         if (!isValidSignature) {
             revert InvalidSignature();
         }
+        setExecutedSig(signature);
+
         UniqueNFT collection = UniqueNFT(collectionAddr);
         collection.mint(to);
     }
@@ -124,17 +125,16 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         address collectionAddr,
         CrossAddress memory to,
         Property[] memory properties,
-        string memory orderHash,
+        string memory orderId,
         bytes memory signature
     ) external {
-        setExecutedOrderId(orderHash);
         /// verify the signature
         bool isValidSignature = SignatureChecker.isValidSignatureNow(
             states().signatureVerifier,
             keccak256(
                 abi.encodePacked(
                     "mintCrossToCollection",
-                    orderHash,
+                    orderId,
                     collectionAddr,
                     _msgSender()
                 )
@@ -144,6 +144,8 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         if (!isValidSignature) {
             revert InvalidSignature();
         }
+        setExecutedSig(signature);
+
         UniqueNFT collection = UniqueNFT(collectionAddr);
         collection.mintCross(to, properties);
     }
@@ -151,17 +153,16 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
     function mintBulkCrossToCollection(
         address collectionAddr,
         MintTokenData[] memory data,
-        string memory orderHash,
+        string memory orderId,
         bytes memory signature
     ) external {
-        setExecutedOrderId(orderHash);
         /// verify the signature
         bool isValidSignature = SignatureChecker.isValidSignatureNow(
             states().signatureVerifier,
             keccak256(
                 abi.encodePacked(
                     "mintBulkCross",
-                    orderHash,
+                    orderId,
                     collectionAddr,
                     _msgSender()
                 )
@@ -171,8 +172,42 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         if (!isValidSignature) {
             revert InvalidSignature();
         }
+        setExecutedSig(signature);
+
         UniqueNFT collection = UniqueNFT(collectionAddr);
         collection.mintBulkCross(data);
+    }
+
+    function exchangeToGift(
+        address collectionAddr_,
+        uint256[] calldata tokenIds_,
+        string memory orderId,
+        bytes memory signature
+    ) external {
+        bool isValidSignature = SignatureChecker.isValidSignatureNow(
+            states().signatureVerifier,
+            keccak256(
+                abi.encodePacked(
+                    "exchangeToGift",
+                    orderId,
+                    collectionAddr_,
+                    _msgSender()
+                )
+            ).toEthSignedMessageHash(),
+            signature
+        );
+        /// verify the signature
+        if (!isValidSignature) {
+            revert InvalidSignature();
+        }
+        setExecutedSig(signature);
+
+        UniqueNFT collection = UniqueNFT(collectionAddr_);
+        for (uint256 i = 0; i < tokenIds_.length; i++) {
+            collection.burn(tokenIds_[i]);
+        }
+
+        emit ExchangeToGift(_msgSender(), collectionAddr_, tokenIds_);
     }
 
     /////////////////////////
