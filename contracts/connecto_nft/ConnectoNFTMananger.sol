@@ -178,6 +178,7 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         collection.mintBulkCross(data);
     }
 
+    // @dev: TODO: add logic for cross address
     function exchangeToGift(
         address collectionAddr_,
         uint256[] calldata tokenIds_,
@@ -224,4 +225,22 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
     /////////////////////////
     // view/pure function
     /////////////////////////
+
+    // @dev: TODO: add logic for cross address
+    function getAllTokenOfUser(address collection_, address wallet_) external view returns (uint256[] memory nftIds) {
+        if (wallet_ == address(0)) {
+            revert InvalidValue();
+        }
+
+        UniqueNFT collection = UniqueNFT(collection_);
+        uint256 arrayLength = collection.balanceOf(wallet_);
+        nftIds = new uint256[](arrayLength);
+        for (uint256 index = 0; index < arrayLength; index++) {
+            uint256 _nftId = collection.tokenOfOwnerByIndex(wallet_, index);
+            if (_nftId == 0) {
+                continue;
+            }
+            nftIds[index] = _nftId;
+        }
+    }
 }

@@ -2031,6 +2031,113 @@
           ]
         }
       }
+    },
+    "a38d65de9ee48661a45419b4250484ca151787bdf239cbff79f6beb9de604ed8": {
+      "address": "0x6e8Aa4d338269f4c1FE60953b573a07A29d40ec6",
+      "txHash": "0xdd03a86fc11c1bb4a3a2fcc45b349102ba49b4256061dacb227c697b059577fb",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "executedSig",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_bytes_memory_ptr,t_bool)",
+            "contract": "ConnectoNFTManagerState",
+            "src": "contracts/connecto_nft/ConnectoNFTManagerState.sol:8"
+          },
+          {
+            "label": "_states",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_struct(ConnectoNFTManagerStateStorage)3746_storage",
+            "contract": "ConnectoNFTManagerState",
+            "src": "contracts/connecto_nft/ConnectoNFTManagerState.sol:16"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes_memory_ptr": {
+            "label": "bytes",
+            "numberOfBytes": "32"
+          },
+          "t_contract(CollectionHelpers)2574": {
+            "label": "contract CollectionHelpers",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_bytes_memory_ptr,t_bool)": {
+            "label": "mapping(bytes => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(ConnectoNFTManagerStateStorage)3746_storage": {
+            "label": "struct ConnectoNFTManagerState.ConnectoNFTManagerStateStorage",
+            "members": [
+              {
+                "label": "helpers",
+                "type": "t_contract(CollectionHelpers)2574",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "connectoToken",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "treasuryWallet",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "2"
+              },
+              {
+                "label": "signatureVerifier",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "3"
+              }
+            ],
+            "numberOfBytes": "128"
+          },
+          "t_bytes_storage": {
+            "label": "bytes"
+          },
+          "t_uint64": {
+            "label": "uint64"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73"
+            }
+          ]
+        }
+      }
     }
   }
 }
