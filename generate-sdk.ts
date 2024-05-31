@@ -3,6 +3,7 @@ import { spawnSync } from "child_process";
 import { abi as ConnectoNFTManagerAbi } from "./artifacts/contracts/connecto_nft/ConnectoNFTMananger.sol/ConnectoNFTManager.json";
 import { abi as ConnectoProtocolAbi } from "./artifacts/contracts/connecto_dapp/ConnectoProtocol.sol/ConnectoProtocol.json";
 import { abi as ConnectoMarketplaceAbi } from "./artifacts/contracts/connecto_dapp/ConnectoMarketplace.sol/ConnectoMarketplace.json";
+import { abi as UniqueNFT } from "./artifacts/@unique-nft/solidity-interfaces/contracts/UniqueNFT.sol/UniqueNFT.json";
 
 const OUT_DIR = "Connecto-smart-contract-sdk";
 const CONTRACTS = [
@@ -20,6 +21,11 @@ const CONTRACTS = [
     name: "ConnectoMarketplace",
     abi: ConnectoMarketplaceAbi,
     fileName: "ConnectoMarketplace",
+  },
+  {
+    name: "UniqueNFT",
+    abi: UniqueNFT,
+    fileName: "UniqueNFT",
   },
 ];
 
@@ -57,7 +63,7 @@ let dir = fs.readdirSync(`${OUT_DIR}/src`, {
 });
 dir = dir.filter((file) => file !== "index.ts");
 const dirContent = dir
-  .map((file) => `export * from "./src/${file}"; `)
+  .map((file) => `export * from "./src/${file}";`)
   .join("\n");
 fs.writeFileSync(`${OUT_DIR}/index.ts`, dirContent, {
   encoding: "utf-8",
