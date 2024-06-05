@@ -67,20 +67,10 @@ describe("ConnectoNFTManager", function () {
       payer.address
     );
     const collectionData = getCollectionData([]);
-    // const tx = await connectoNFTManager.createCollection(
-    //   getCollectionData([]),
-    //   payer.address,
-    //   connectoFee,
-    //   "https://ipfs.unique.network/ipfs/{id}",
-    //   createCollectionOrderId,
-    //   createCollectionSig,
-    //   txConfig
-    // );
     const tx = await connectoNFTManager.createNFTCollection(
       payer.address,
       connectoFee,
       collectionData.name,
-      collectionData.description,
       collectionData.token_prefix,
       COLLECTION_CONFIG.collection.fileUrl,
       createCollectionOrderId,

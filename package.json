@@ -62,8 +62,10 @@
     "ethereumjs-tx": "^2.1.2",
     "ethers": "v5.7",
     "fs": "^0.0.1-security",
+    "hardhat-conflux": "^0.1.1",
     "hardhat-watcher": "^2.1.1",
     "husky": "^7.0.4",
+    "js-conflux-sdk": "^2.1.2",
     "moment": "^2.30.1",
     "path": "^0.12.7",
     "wagmi": "^2.8.7"

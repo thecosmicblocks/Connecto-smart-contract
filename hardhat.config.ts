@@ -8,6 +8,7 @@ import "@openzeppelin/hardhat-upgrades";
 import "solidity-coverage";
 import "hardhat-watcher";
 import "hardhat-contract-sizer";
+import "hardhat-conflux";
 
 dotenv.config();
 
@@ -20,6 +21,10 @@ const config: HardhatUserConfig = {
   defaultNetwork: "polygon",
   networks: {
     /// TESTNET
+    conflux_testnet: {
+      url: "https://evmtestnet.confluxrpc.com",
+      accounts: accounts,
+    },
     unique_testnet: {
       url: "https://rpc-opal.unique.network",
       accounts: accounts,
@@ -155,8 +160,17 @@ const config: HardhatUserConfig = {
       ethereum_testnet: "foo",
       ethereum: "foo",
       // unique_testnet: "foo",
+      espaceTestnet: "espace",
     },
     customChains: [
+      {
+        network: "conflux_testnet",
+        chainId: 71,
+        urls: {
+          apiURL: "https://evmapi-testnet.confluxscan.io/api/",
+          browserURL: "https://evmtestnet.confluxscan.io/",
+        },
+      },
       {
         network: "polygon_testnet",
         chainId: 80002,

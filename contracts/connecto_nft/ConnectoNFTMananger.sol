@@ -5,24 +5,20 @@ import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Own
 import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-import {CollectionHelpers} from "@unique-nft/solidity-interfaces/contracts/CollectionHelpers.sol";
-import {UniqueNFT, CollectionNestingAndPermission, CrossAddress, MintTokenData, Property} from "@unique-nft/solidity-interfaces/contracts/UniqueNFT.sol";
-
 import {ConnectoNFTManagerState} from "./ConnectoNFTManagerState.sol";
 import {TransferHelper} from "../common/TransferHelper.sol";
+import {ConnectoNFT} from "./ConnectoNFT.sol";
 
 contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
     using MessageHashUtils for bytes32;
 
     function initialize(
-        address collectionHelper_,
         address connectoToken_,
         address treasuryWallet_,
         address signatureVerifier_,
         address defaultOwner_
     ) external initializer {
         __Ownable_init(defaultOwner_);
-        _states.helpers = CollectionHelpers(collectionHelper_);
         _states.connectoToken = connectoToken_;
         _states.treasuryWallet = treasuryWallet_;
         _states.signatureVerifier = signatureVerifier_;
@@ -32,7 +28,6 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         address collectionOwner,
         uint256 connectoFeeAmount,
         string memory name,
-        string memory description,
         string memory symbol,
         string calldata baseURI,
         string memory orderId,
@@ -67,30 +62,15 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
             connectoFeeAmount
         );
 
-        /// verify the Unique fee
-        uint256 uniqueCollectionFee = _cachedStates
-            .helpers
-            .collectionCreationFee();
-        if (msg.value < uniqueCollectionFee) {
-            revert InsufficientAmount(msg.value, uniqueCollectionFee);
-        }
-
         // create a collection using the method from the library
-        address collectionAddress = _cachedStates.helpers.createNFTCollection{
-            value: uniqueCollectionFee
-        }(name, description, symbol);
-        // make the collection ERC721Metadata compatible
-        _cachedStates.helpers.makeCollectionERC721MetadataCompatible(
-            collectionAddress,
+        ConnectoNFT collectionAddress = new ConnectoNFT(
+            collectionOwner,
+            address(this),
+            name,
+            symbol,
             baseURI
         );
-        // get the collection object by its address
-        UniqueNFT collection = UniqueNFT(collectionAddress);
-        // set the collection admin and owner using cross address
-        collection.addCollectionAdminCross(CrossAddress(address(this), 0));
-        collection.changeCollectionOwnerCross(CrossAddress(collectionOwner, 0));
-
-        emit NewCollection(collectionOwner, collectionAddress);
+        emit NewCollection(collectionOwner, address(collectionAddress));
     }
 
     function mintToCollection(
@@ -117,42 +97,14 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         }
         setExecutedSig(signature);
 
-        UniqueNFT collection = UniqueNFT(collectionAddr);
+        ConnectoNFT collection = ConnectoNFT(collectionAddr);
         collection.mint(to);
     }
 
-    function mintCrossToCollection(
+    function mintBulkCollection(
         address collectionAddr,
-        CrossAddress memory to,
-        Property[] memory properties,
-        string memory orderId,
-        bytes memory signature
-    ) external {
-        /// verify the signature
-        bool isValidSignature = SignatureChecker.isValidSignatureNow(
-            states().signatureVerifier,
-            keccak256(
-                abi.encodePacked(
-                    "mintCrossToCollection",
-                    orderId,
-                    collectionAddr,
-                    _msgSender()
-                )
-            ).toEthSignedMessageHash(),
-            signature
-        );
-        if (!isValidSignature) {
-            revert InvalidSignature();
-        }
-        setExecutedSig(signature);
-
-        UniqueNFT collection = UniqueNFT(collectionAddr);
-        collection.mintCross(to, properties);
-    }
-
-    function mintBulkCrossToCollection(
-        address collectionAddr,
-        MintTokenData[] memory data,
+        address to,
+        uint256 amount,
         string memory orderId,
         bytes memory signature
     ) external {
@@ -174,8 +126,8 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         }
         setExecutedSig(signature);
 
-        UniqueNFT collection = UniqueNFT(collectionAddr);
-        collection.mintBulkCross(data);
+        ConnectoNFT collection = ConnectoNFT(collectionAddr);
+        collection.mintBulk(to, amount);
     }
 
     // @dev: TODO: add logic for cross address
@@ -203,7 +155,7 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
         }
         setExecutedSig(signature);
 
-        UniqueNFT collection = UniqueNFT(collectionAddr_);
+        ConnectoNFT collection = ConnectoNFT(collectionAddr_);
         for (uint256 i = 0; i < tokenIds_.length; i++) {
             collection.burn(tokenIds_[i]);
         }
@@ -227,12 +179,15 @@ contract ConnectoNFTManager is ConnectoNFTManagerState, OwnableUpgradeable {
     /////////////////////////
 
     // @dev: TODO: add logic for cross address
-    function getAllTokenOfUser(address collection_, address wallet_) external view returns (uint256[] memory nftIds) {
+    function getAllTokenOfUser(
+        address collection_,
+        address wallet_
+    ) external view returns (uint256[] memory nftIds) {
         if (wallet_ == address(0)) {
             revert InvalidValue();
         }
 
-        UniqueNFT collection = UniqueNFT(collection_);
+        ConnectoNFT collection = ConnectoNFT(collection_);
         uint256 arrayLength = collection.balanceOf(wallet_);
         nftIds = new uint256[](arrayLength);
         for (uint256 index = 0; index < arrayLength; index++) {
