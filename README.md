@@ -1,1 +1,2 @@
-# Connecto Solidity Smart Contract
+- For Unique Network: Direct to [Unique](https://github.com/thecosmicblocks/Connecto-smart-contract/tree/solidity)
+- For Conflux Network: Direct to [Conflux](https://github.com/thecosmicblocks/Connecto-smart-contract/tree/conflux)
