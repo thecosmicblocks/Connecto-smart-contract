@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "add-license": "license-header",
     "test": "npx hardhat test",
     "compile": "npx hardhat compile",
     "generate-sdk": "yarn ts-node generate-sdk.ts",
@@ -15,8 +16,8 @@
     "add-husky": "npx husky install && npx husky add .husky/pre-commit \"npm run lint-test && npm run lint-script && npm run lint-contract && git add -A\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "The Cosmic Blocks Lab <hello@thecosmicblock.com>",
+  "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
