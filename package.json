@@ -1,5 +1,5 @@
 {
-  "name": "connecto-evm-smart_contract",
+  "name": "@thecosmicblock/connecto-smart-contract",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,7 +16,11 @@
     "add-husky": "npx husky install && npx husky add .husky/pre-commit \"npm run lint-test && npm run lint-script && npm run lint-contract && git add -A\""
   },
   "keywords": [],
-  "author": "The Cosmic Blocks Lab <hello@thecosmicblock.com>",
+  "author": {
+    "name": "The Cosmic Blocks Lab",
+    "email": "hello@thecosmicblock.com",
+    "url": "https://thecosmicblock.com/"
+  },
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.5",
